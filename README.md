@@ -1,16 +1,17 @@
 # Missile-Command-Arcade-Game
 
-An ASCII arcade-like game using the Curses library in C
+An ASCII arcade-like game using the Curses library in C.
+Based on the 80s aracde game "Missile Command" developed by Atari, Inc. and licensed to Sega for European release.
 
 ## How to set up 
 
-'''bash
+```bash
 sudo apt-get install libncurses5-dev libncursesw5-dev
 
 gcc -o missile missile.c -lncurses
 
 ./missile 
-'''
+```
 
 ## Screenshots 
 
