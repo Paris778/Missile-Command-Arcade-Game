@@ -1,0 +1,7 @@
+On Ubuntu Linux 
+
+sudo apt-get install libncurses5-dev libncursesw5-dev
+
+gcc -o missile missile.c -lncurses
+
+./missile 

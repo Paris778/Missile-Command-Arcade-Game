@@ -1,0 +1,200 @@
+dnl***************************************************************************
+dnl Copyright (c) 2007-2015,2017 Free Software Foundation, Inc.              *
+dnl                                                                          *
+dnl Permission is hereby granted, free of charge, to any person obtaining a  *
+dnl copy of this software and associated documentation files (the            *
+dnl "Software"), to deal in the Software without restriction, including      *
+dnl without limitation the rights to use, copy, modify, merge, publish,      *
+dnl distribute, distribute with modifications, sublicense, and/or sell       *
+dnl copies of the Software, and to permit persons to whom the Software is    *
+dnl furnished to do so, subject to the following conditions:                 *
+dnl                                                                          *
+dnl The above copyright notice and this permission notice shall be included  *
+dnl in all copies or substantial portions of the Software.                   *
+dnl                                                                          *
+dnl THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS  *
+dnl OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF               *
+dnl MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.   *
+dnl IN NO EVENT SHALL THE ABOVE COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM,   *
+dnl DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR    *
+dnl OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR    *
+dnl THE USE OR OTHER DEALINGS IN THE SOFTWARE.                               *
+dnl                                                                          *
+dnl Except as contained in this notice, the name(s) of the above copyright   *
+dnl holders shall not be used in advertising or otherwise to promote the     *
+dnl sale, use or other dealings in this Software without prior written       *
+dnl authorization.                                                           *
+dnl***************************************************************************
+dnl
+dnl Author: Thomas E. Dickey	2007-on
+dnl
+dnl $Id: configure.in,v 1.37 2017/07/25 23:28:42 tom Exp $
+dnl This is a simple configuration-script for tack which makes it simpler to
+dnl build outside the ncurses tree (provided that ncurses was configured using
+dnl the --with-ticlib option).
+dnl
+dnl See http://invisible-island.net/autoconf/ for additional information.
+dnl ---------------------------------------------------------------------------
+AC_PREREQ(2.52)
+AC_INIT(tack.c)
+AC_CONFIG_HEADER(ncurses_cfg.h:ncurses_tst.hin)
+
+AC_DEFUN([CF_PDCURSES_X11],[
+AC_MSG_ERROR(tack cannot be built with PDCurses)
+])dnl
+
+CF_INHERIT_SCRIPT(config.guess)
+CF_INHERIT_SCRIPT(config.sub)
+CF_CHECK_CACHE
+
+AC_PROG_MAKE_SET
+AC_PROG_CC
+AC_PROG_CPP
+
+CF_PROG_INSTALL
+CF_PROG_LINT
+CF_MAKEFLAGS
+CF_MAKE_TAGS
+
+dnl These are standard among *NIX systems, but not when cross-compiling
+AC_CHECK_TOOL(RANLIB, ranlib, ':')
+AC_CHECK_TOOL(LD, ld, ld)
+AC_CHECK_TOOL(AR, ar, ar)
+AC_CHECK_TOOL(NM, nm, nm)
+CF_AR_FLAGS
+
+dnl Things that we don't need (or must override) if we're not building ncurses
+CC_G_OPT="-g"					AC_SUBST(CC_G_OPT)
+CC_SHARED_OPTS=unknown			AC_SUBST(CC_SHARED_OPTS)
+DESTDIR=""						AC_SUBST(DESTDIR)
+DFT_DEP_SUFFIX=""				AC_SUBST(DFT_DEP_SUFFIX)
+DFT_OBJ_SUBDIR=`pwd|sed -e's:.*/::'`	AC_SUBST(DFT_OBJ_SUBDIR)
+DFT_UPR_MODEL="NORMAL"			AC_SUBST(DFT_UPR_MODEL)
+EXTRA_LDFLAGS=""				AC_SUBST(EXTRA_LDFLAGS)
+LDFLAGS_SHARED=""				AC_SUBST(LDFLAGS_SHARED)
+LD_MODEL=""						AC_SUBST(LD_MODEL)
+LD_SHARED_OPTS=""				AC_SUBST(LD_SHARED_OPTS)
+LIBTOOL=""						AC_SUBST(LIBTOOL)
+LIB_CLEAN=""					AC_SUBST(LIB_CLEAN)
+LIB_COMPILE=""					AC_SUBST(LIB_COMPILE)
+LIB_INSTALL=""					AC_SUBST(LIB_INSTALL)
+LIB_LINK='$(CC)'				AC_SUBST(LIB_LINK)
+LIB_SUFFIX=""					AC_SUBST(LIB_SUFFIX)
+LIB_UNINSTALL=""				AC_SUBST(LIB_UNINSTALL)
+LINK_PROGS=""					AC_SUBST(LINK_PROGS)
+LOCAL_LDFLAGS=""				AC_SUBST(LOCAL_LDFLAGS)
+TINFO_LDFLAGS=""				AC_SUBST(TINFO_LDFLAGS)
+TINFO_LIBS=""					AC_SUBST(TINFO_LIBS)
+cf_cv_abi_version=""			AC_SUBST(cf_cv_abi_version)
+cf_cv_rel_version=""			AC_SUBST(cf_cv_rel_version)
+
+NCURSES_TREE="#"
+AC_SUBST(NCURSES_TREE)
+
+CF_TOP_BUILDDIR
+cf_cv_screen=ncurses
+cf_cv_libtype=
+
+AC_EXEEXT
+AC_OBJEXT
+AC_SYS_LONG_FILE_NAMES
+CF_WITH_LIB_PREFIX
+
+CF_ANSI_CC_REQD
+CF_DISABLE_ECHO
+
+# ncurses uses a different symbol as of 2012/02/26 (workaround)
+ECHO_LINK="$ECHO_LD"
+AC_SUBST(ECHO_LINK)
+
+CF_ENABLE_WARNINGS
+CF_GCC_ATTRIBUTES
+CF_XOPEN_SOURCE
+
+###	Checks for external-data
+CF_LINK_DATAONLY
+
+dnl ---------------------------------------------------------------------------
+CF_PKG_CONFIG
+CF_WITH_NCURSES_ETC
+
+CF_CURSES_CHECK_DATA(boolnames)
+CF_CURSES_CHECK_DATA(boolfnames)
+
+# The CF_*CURSES_CONFIG stuff provides curses/ncurses, which may include tinfo.
+# Check if (a) we have tinfo library and (b) if we need ncurses library too.
+
+cf_curses_lib=$cf_cv_screen$cf_cf_libtype
+cf_tinfo_lib=tinfo$cf_cf_libtype
+
+# If we do not have and/or do not need tinfo, reset cf_tinfo_lib to empty.
+AC_CHECK_FUNC(setupterm,[
+	case "x$LIBS" in #(vi
+	*$cf_tinfo_lib*) #(vi
+		;;
+	*)
+		AC_CHECK_LIB($cf_tinfo_lib,reset_shell_mode,
+			[LIBS="-l$cf_tinfo_lib $LIBS"],
+			[cf_tinfo_lib=''])
+		;;
+	esac
+],[
+	AC_CHECK_LIB($cf_tinfo_lib, setupterm,
+		[LIBS="-l$cf_tinfo_lib $LIBS"],
+		[cf_tinfo_lib=''])
+])
+
+CF_DISABLE_RPATH_HACK
+CF_DISABLE_LEAKS
+
+# look for curses-related headers
+AC_CHECK_HEADERS( \
+	term_entry.h \
+	)
+
+AC_CHECK_HEADERS( \
+sys/select.h \
+sys/time.h \
+)
+
+AC_CHECK_FUNCS( \
+_nc_free_tinfo \
+gettimeofday \
+select \
+)
+
+CF_SIG_ATOMIC_T
+
+CF_WITH_MAN2HTML
+
+### Now that we're done running tests, add the compiler-warnings, if any
+CF_ADD_CFLAGS($EXTRA_CFLAGS)
+
+dnl ---------------------------------------------------------------------------
+
+AC_OUTPUT(Makefile,[
+	cat >>Makefile <<TEST_EOF
+
+# These rules are generated so we do not rely on suffix rules, which do not
+# work consistently for different make-programs (the '\$(MODEL)/' confuses
+# some, and the '\$x' confuses others).
+TEST_EOF
+LIST=`sed -e 's/[[ 	]].*//' -e '/^[[#@]]/d' $srcdir/modules`
+for N in $LIST
+do
+	P=tack.h
+	test $N != tackgen && P="$P tackgen.h"
+	cat >>Makefile <<TEST_EOF
+
+\$(MODEL)/$N.o : $N.c \\
+		$P \\
+		ncurses_cfg.h
+	$SHOW_CC
+	$ECHO_CC\$(CC) -c \$(CFLAGS_DEFAULT) $N.c
+TEST_EOF
+done
+],[],
+[set |fgrep _CC= |sed -e s%=%=\'% -e s%\$%\'% -e s%\'\'%\'%g -e s%=\'\$%=\'\'% >>$CONFIG_STATUS
+cat])
+# vi:ts=4 sw=4
+CF_MAKE_DOCS(tack,1)

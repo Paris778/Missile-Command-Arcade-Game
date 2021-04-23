@@ -1,0 +1,23 @@
+-- $Id: README,v 1.4 2017/07/23 22:25:20 tom Exp $
+
+The 'tack' program is a diagnostic that is designed to create and
+verify the correctness of terminfo's.  This program can be used to
+create new terminal descriptions that are not included in the standard
+release.  Although 'tack' has been distributed with ncurses, it is not an
+integral part of ncurses.  It may be removed from the release without
+limiting the usefulness of ncurses on those terminals described in the
+terminfo data base.  The best way to remove 'tack' from the build is
+to delete or rename the 'tack' directory before running the configure
+script.
+
+Starting with ncurses 5.6 patch 20070113, this program can be built
+outside the ncurses source-tree, provided that ncurses is configured
+using the "--with-ticlib" option.  That makes available the private
+interfaces used by tack, and eliminates the need to distribute tack
+as an optional part of ncurses.
+
+In July 2017, the issue of tic library dependencies was revisited.
+It is no longer necessary to specially configure ncurses to provide
+for building tack.
+
+Unlike ncurses, the 'tack' program is covered under the GNU Public License.

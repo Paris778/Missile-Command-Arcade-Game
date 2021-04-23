@@ -1,0 +1,81 @@
+tack (1.08+20170726) unstable; urgency=low
+
+  * new release
+
+ -- Thomas E. Dickey <dickey@invisible-island.net>  Tue, 25 Jul 2017 21:15:36 -0400
+
+tack (1.07+20170723) unstable; urgency=low
+
+  * drop dependency on tic-library
+
+ -- Thomas E. Dickey <dickey@invisible-island.net>  Sun, 23 Jul 2017 17:21:30 -0400
+
+tack (1.07+20170318) unstable; urgency=low
+
+  * maintenance updates
+
+ -- Thomas E. Dickey <dickey@invisible-island.net>  Sat, 18 Mar 2017 10:04:06 -0400
+
+tack (1.07+20150706) unstable; urgency=low
+
+  * maintenance updates
+
+ -- Thomas E. Dickey <dickey@invisible-island.net>  Mon, 06 Jul 2015 04:45:30 -0400
+
+tack (1.07+20150606) unstable; urgency=low
+
+  * maintenance updates
+
+ -- Thomas E. Dickey <dickey@invisible-island.net>  Tue, 02 Jun 2015 04:45:21 -0400
+
+tack (1.07-20130713) unstable; urgency=low
+
+  * improvements for configure script
+
+ -- Thomas E. Dickey <dickey@invisible-island.net>  Sat, 13 Jul 2013 11:44:55 -0400
+
+tack (1.07-20120916) unstable; urgency=low
+
+  * improvements for configure script
+
+ -- Thomas E. Dickey <dickey@invisible-island.net>  Sun, 16 Sep 2012 10:01:00 -0400
+
+tack (1.07-20120429) unstable; urgency=low
+
+  * add makefile rules for generated documentation.
+  * corrected ncv test to handle the default case.
+  * improve cleanup after color palette tests.
+  * add test for eslok.
+  * portability-fix for configure script.
+
+ -- Thomas E. Dickey <dickey@invisible-island.net>  Sun, 29 Apr 2012 11:17:02 -0400
+
+tack (1.07-20120303) unstable; urgency=low
+
+  * code cleanup
+
+ -- Thomas E. Dickey <dickey@invisible-island.net>  Fri, 02 Mar 2012 05:56:16 -0500
+
+tack (1.07-20120226) unstable; urgency=low
+
+  * improvements for configure script
+
+ -- Thomas E. Dickey <dickey@invisible-island.net>  Sun, 26 Feb 2012 20:01:01 -0500
+
+tack (1.07-20110626) unstable; urgency=low
+
+  * minor fixes for character-set display, etc., from Daniel Weaver
+
+ -- Thomas E. Dickey <dickey@invisible-island.net>  Sun, 26 Jun 2011 14:45:27 -0400
+
+tack (1.07-20110501) unstable; urgency=low
+
+  * fix sign-extension bug.
+
+ -- Thomas E. Dickey <dickey@invisible-island.net>  Sun, 01 May 2011 11:16:54 -0400
+
+tack (1.07-20100904) unstable; urgency=low
+
+  * Add package scripts to upstream source, for test-builds.
+
+ -- Thomas E. Dickey <dickey@invisible-island.net>  Sat, 04 Sep 2010 10:58:27 -0400
